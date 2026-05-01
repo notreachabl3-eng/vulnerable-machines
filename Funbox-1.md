@@ -55,39 +55,62 @@ Performed WordPress enumeration using WPScan:
 - Enumerated valid users:
   - admin
   - joe
- 
 
+ ![WP Eneumeration](screenshots/Funbox-1/wpsenum.png)
+
+- Created file name Users and listed both users inside the file.
 - Conducted password brute-force using rockyou.txt
+
+`wpscan --url http://funbox.fritz.box -U users -P /usr/share/wordlists/rockyou.txt`
+  
 - Successfully found valid credentials for both users
+
+![WP Bruteforce](screenshots/Funbox-1/wpsbruteforce.png)
 
 ## Exploitation
 Attempted SSH login using discovered credentials.
 
-- User `joe` was able to login via SSH using the same password obtained from WPScan
+- User `joe` was able to login via SSH using the same password obtained from WPScan.
+
+`ssh joe@192.168.11.4`
 
 ## Privilege Escalation
 After gaining SSH access:
 
 - Explored system directories
 - Found a directory belonging to another user (`funny`)
-- Located a file: `.backup.sh`
+- Located a file: `.backup.sh` which has world writable permissions(rwxrwxrwx) with executable script.
+
+![Backup.sh](screenshots/Funbox-1/backup.sh.png)
 
 Key observations:
-- File had **777 permissions (world writable)**
-- Suspected it was executed by a cron job
+- During the inspection of the file system, I discovered a script containing the #!/bin/sh shebang. Given permissions, I suspected it was being executed as a cron job or a scheduled task.
 
-Used `pspy` tool to monitor background processes:
+Used `pspy` tool to monitor background processes and confirm our finding:
+
+`pspy` is a command-line tool used to monitor Linux processes in real-time without requiring root privileges
+
+- Uploaded pspy tool via setting up simple.http server on Kali to monitor running process without root privilege.
+
+![pspy](screenshots/Funbox-1/pspy.png)
+
 - Confirmed `.backup.sh` was being executed periodically by `root` user and user `funny` himself
 
 ### Exploitation Steps:
 - Modified `.backup.sh` to include a reverse shell payload
+
+![Payload Insertion](screenshots/Funbox-1/payload.png)
+
 - Set up a listener on Kali Linux
 - Waited for cron job execution
-- Got shell for user `funny` and removed him from cronjob using `crontab -r`
+- Got shell for user `funny` but he has no sudoers privilegs so removed him from cronjob using `crontab -r`
 - Waited for cron job execution for `root` user 
 
 ## Result
 - Successfully received a reverse shell as a `root`
+
+![Root Shell](screenshots/Funbox-1/root.png)
+
 - Changed directory to root and achieved `root flag`
 
 ## Key Learnings
