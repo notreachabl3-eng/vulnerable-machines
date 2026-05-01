@@ -17,7 +17,7 @@ Each machine demonstrates a full attack lifecycle from reconnaissance to privile
 
 | Machine Name                        | Difficulty | Link                                     |
 | ----------------------------------- | ---------- | ---------------------------------------- |
-| Funbox 1                            | Easy       | |
+| Funbox 1                            | Easy       | ![Funbox-1](Funbox-1.md)                 |
 |                                     |            |  |
 
 ---
