@@ -92,7 +92,7 @@ Used `pspy` tool to monitor background processes and confirm our finding:
 
 - Uploaded pspy tool via setting up simple.http server on Kali to monitor running process without root privilege.
 
-![pspy](screenshots/Funbox-1/pspy.png)
+
 
 - Confirmed `.backup.sh` was being executed periodically by `root` user and user `funny` himself
 
