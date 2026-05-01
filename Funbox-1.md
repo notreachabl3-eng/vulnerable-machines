@@ -21,25 +21,41 @@ Performed initial port scanning using Nmap:
 
 `nmap -sS -sV 192.168.11.4 -T4`
 
+![Nmap Scan](screenshots/Funbox-1/nmap.png)
+
 Discovered the following open ports:
 - 21 (FTP)
 - 22 (SSH)
 - 80 (HTTP)
 
+I initially attempted to access the FTP service using anonymous authentication (username: anonymous, password: anonymous). However, the server rejected the login, indicating that anonymous access is disabled and valid credentials are required for entry.
+
+Upon navigating to the target IP on port 80, the HTTP response issued a redirect to http://funbox.fritz.box. To ensure tools and the browser could resolve this domain correctly, I mapped the target IP to the hostname in the /etc/hosts file.
+
 ## Enumeration
 Started web enumeration on port 80.
 
 - Used Gobuster for directory brute-forcing
+
+`sudo gobuster dir -u http://funbox.fritz.box -w /usr/share/wordlists/dirb/common.txt`
+
 - Discovered:
   - /robots.txt (no useful data)
   - /secret (no useful data)
   - /wp-admin (indicating WordPress application)
+ 
+![Gobuster Scan](screenshots/Funbox-1/gobuster.png)
+ 
+Gobuster revealed a /wp-admin directory, confirming the site runs on WordPress. This prompted me to switch to wpscan for the next phase.
 
 Performed WordPress enumeration using WPScan:
+
+`wpscan --url http://funbox.fritz.box -e u,p`
 
 - Enumerated valid users:
   - admin
   - joe
+ 
 
 - Conducted password brute-force using rockyou.txt
 - Successfully found valid credentials for both users
