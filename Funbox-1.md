@@ -4,15 +4,22 @@
 Gain root access on the target machine.
 
 ## Tools Used
+- Netdiscover
 - Nmap
 - Gobuster
 - WPScan
 - pspy
 
 ## Reconnaissance
+Performed target identification using `netdiscover`
+
+`sudo netdiscover -r 192.168.11.0/24`
+
+![Netdiscover](screenshots/Funbox-1/netdiscover.png)
+
 Performed initial port scanning using Nmap:
 
-nmap -sS -sV <target_ip>
+`nmap -sS -sV 192.168.11.4 -T4`
 
 Discovered the following open ports:
 - 21 (FTP)
