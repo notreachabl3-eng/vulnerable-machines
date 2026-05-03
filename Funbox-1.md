@@ -74,7 +74,6 @@ Attempted SSH login using discovered credentials.
 
 `ssh joe@192.168.11.4`
 
-## Privilege Escalation
 After gaining SSH access:
 
 - Explored system directories
@@ -96,7 +95,6 @@ Used `pspy` tool to monitor background processes and confirm our finding:
 
 - Confirmed `.backup.sh` was being executed periodically by `root` user and user `funny` himself
 
-### Exploitation Steps:
 - Modified `.backup.sh` to include a reverse shell payload
 
 ![Payload Insertion](screenshots/Funbox-1/payload.png)
